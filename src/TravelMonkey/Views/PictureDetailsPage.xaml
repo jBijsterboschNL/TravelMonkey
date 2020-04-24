@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:effect="clr-namespace:TravelMonkey.Effects"
+             mc:Ignorable="d"
+             x:Class="TravelMonkey.Views.PictureDetailsPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <StackLayout>
+            <yummy:PancakeView HasShadow="True" IsClippedToBounds="False" HorizontalOptions="Fill" VerticalOptions="Start" CornerRadius="0,0,0,40" HeightRequest="350">
+                <Grid>
+                    <Image Source="{Binding Picture.ImageStream}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+
+                    <yummy:PancakeView WidthRequest="40" HeightRequest="40" CornerRadius="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="20" Padding="0">
+                        <Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="BackButton_Tapped" />
+                            </Grid.GestureRecognizers>
+                            
+                            <BoxView BackgroundColor="White" Opacity="0.3" />
+                            <Image Source="arrow_back" Margin="6" />
+                        </Grid>
+                    </yummy:PancakeView>
+
+                    <yummy:PancakeView HeightRequest="100" BackgroundColor="#aaeeeeee" CornerRadius="20,0,0,40" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                        <Label Text="{Binding Picture.Description}" MaxLines="2" FontSize="24" FontFamily="LatoBold" TextColor="Black"  Margin="20,20,0,0" />
+                    </yummy:PancakeView>
+                </Grid>
+            </yummy:PancakeView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

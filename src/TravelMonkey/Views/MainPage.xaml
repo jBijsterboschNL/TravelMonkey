@@ -87,6 +87,10 @@
                         <DataTemplate>
                             <Grid Padding="10,0">
                                 <yummy:PancakeView HeightRequest="120" WidthRequest="200" IsClippedToBounds="true" CornerRadius="12">
+                                    <yummy:PancakeView.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Picture_Tapped" />
+                                    </yummy:PancakeView.GestureRecognizers>
+                                    
                                     <Grid>
                                         <Image Aspect="AspectFill" Source="{Binding ImageStream}" />
                                         <yummy:PancakeView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundGradientStartColor="Transparent" BackgroundGradientEndColor="#222" />

@@ -36,6 +36,14 @@ namespace TravelMonkey.Views
             await Navigation.PushModalAsync(new AddPicturePage());
         }
 
+        private async void Picture_Tapped(object sender, EventArgs e)
+        {
+            if ((sender as BindableObject).BindingContext is PictureEntry picture)
+            {
+                await Navigation.PushAsync(new PictureDetailsPage(picture));
+            }
+        }
+
         private async void Entry_Completed(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TranslateTextEntry.Text))
