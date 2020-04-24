@@ -16,6 +16,8 @@ namespace TravelMonkey
             InitializeComponent();
 
             MainPage = new SplashScreen();
+
+            Akavache.Registrations.Start("TravelMonkey");
         }
 
         protected override void OnStart()

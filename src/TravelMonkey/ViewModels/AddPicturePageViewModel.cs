@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
@@ -58,10 +60,22 @@ namespace TravelMonkey.ViewModels
         public AddPicturePageViewModel()
         {
             TakePhotoCommand = new Command(async () => await TakePhoto());
-            AddPictureCommand = new Command(() =>
+            AddPictureCommand = new Command(async () =>
              {
-                 MockDataStore.Pictures.Add(new PictureEntry { Description = _pictureDescription, Image = _photoSource });
-                 MessagingCenter.Send(this, Constants.PictureAddedMessage);
+                 if (_photoSource == null) return;
+
+                 byte[] bytes;
+                 using (var stream = await _photoSource.Stream(CancellationToken.None))
+                 {
+                     using (MemoryStream ms = new MemoryStream())
+                     {
+                         stream.CopyTo(ms);
+                         bytes = ms.ToArray();
+
+                         await PersistentDataStore.AddPicture(_pictureDescription, bytes);
+                         MessagingCenter.Send(this, Constants.PictureAddedMessage);
+                     }
+                 }
              });
         }
 
@@ -117,7 +131,9 @@ namespace TravelMonkey.ViewModels
                 PictureDescription = result.Description;
 
                 if (!string.IsNullOrWhiteSpace(result.LandmarkDescription))
+                {
                     PictureDescription += $". {result.LandmarkDescription}";
+                }
             }
             finally
             {

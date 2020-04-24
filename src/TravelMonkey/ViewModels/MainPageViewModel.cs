@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Timers;
 using TravelMonkey.Data;
 using TravelMonkey.Models;
@@ -13,7 +14,13 @@ namespace TravelMonkey.ViewModels
         private readonly Timer _slideShowTimer = new Timer(5000);
 
         public List<Destination> Destinations => MockDataStore.Destinations;
-        public ObservableCollection<PictureEntry> Pictures => MockDataStore.Pictures;
+        
+        private ObservableCollection<PictureEntry> _pictures = new ObservableCollection<PictureEntry>();
+        public ObservableCollection<PictureEntry> Pictures
+        {
+            get => _pictures;
+            set => Set(ref _pictures, value);
+        }
 
         private Destination _currentDestination;
         public Destination CurrentDestination
@@ -35,6 +42,8 @@ namespace TravelMonkey.ViewModels
 
         public MainPageViewModel()
         {
+            RefreshPictures();
+
             if (Destinations.Count > 0)
             {
                 CurrentDestination = Destinations[0];
@@ -49,6 +58,14 @@ namespace TravelMonkey.ViewModels
                         CurrentDestination = Destinations[currentIdx + 1];
                 };
             }
+
+            MessagingCenter.Subscribe<AddPicturePageViewModel>(this, Constants.PictureAddedMessage, async (vm) => await RefreshPictures());
+        }
+
+        private async Task RefreshPictures()
+        {
+            var pictures = await PersistentDataStore.GetPictures();
+            Pictures = new ObservableCollection<PictureEntry>(pictures);
         }
 
         public void StartSlideShow()
