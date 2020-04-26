@@ -3,7 +3,6 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ResolutionGroupName("TravelMonkey")]
 [assembly: ExportEffect(typeof(SafeAreaPaddingEffect_iOS), "SafeAreaPaddingEffect")]
 namespace TravelMonkey.iOS.Effects
 {

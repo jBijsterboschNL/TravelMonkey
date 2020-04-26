@@ -63,6 +63,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Effects\UILabelShadowEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
@@ -175,6 +176,5 @@
     <BundleResource Include="Resources\TravelMonkey.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Effects\" />
   </ItemGroup>
 </Project>

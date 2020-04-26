@@ -69,6 +69,9 @@
                                 </StackLayout>
 
                                 <Label TextColor="#fff" FontFamily="LatoBlack" FontSize="32" Text="{Binding BindingContext.Destination.Name, Source={x:Reference DestinationPageRoot}}">
+                                    <Label.Effects>
+                                        <effect:ShadowEffect DistanceX="5" DistanceY="5" Color="#000" Radius="5" />
+                                    </Label.Effects>
                                 </Label>
                             </StackLayout>
                         </StackLayout>
