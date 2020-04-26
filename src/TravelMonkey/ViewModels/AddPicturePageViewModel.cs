@@ -14,6 +14,7 @@ namespace TravelMonkey.ViewModels
     public class AddPicturePageViewModel : BaseViewModel
     {
         private readonly ComputerVisionService _computerVisionService = new ComputerVisionService();
+        private readonly FaceService _faceService = new FaceService();
 
         public bool ShowImagePlaceholder => !ShowPhoto;
         public bool ShowPhoto => _photoSource != null;
@@ -72,7 +73,7 @@ namespace TravelMonkey.ViewModels
                          stream.CopyTo(ms);
                          bytes = ms.ToArray();
 
-                         await PersistentDataStore.AddPicture(_pictureDescription, bytes);
+                         //await PersistentDataStore.AddPicture(_pictureDescription, bytes);
                          MessagingCenter.Send(this, Constants.PictureAddedMessage);
                      }
                  }
@@ -115,30 +116,32 @@ namespace TravelMonkey.ViewModels
 
             IsPosting = true;
 
-            try
-            {
-                var pictureStream = _photo.GetStreamWithImageRotatedForExternalStorage();
-                var result = await _computerVisionService.AddPicture(pictureStream);
+            //try
+            //{
+            //    var pictureStream = _photo.GetStreamWithImageRotatedForExternalStorage();
 
-                if (!result.Succeeded)
-                {
-                    MessagingCenter.Send(this, Constants.PictureFailedMessage);
-                    return;
-                }
+            //    //var x = _faceService.DetectFaceEmotion(pictureStream);
+            //    var result = await _computerVisionService.AddPicture(pictureStream);
 
-                PictureAccentColor = result.AccentColor;
+            //    if (!result.Succeeded)
+            //    {
+            //        MessagingCenter.Send(this, Constants.PictureFailedMessage);
+            //        return;
+            //    }
 
-                PictureDescription = result.Description;
+            //    PictureAccentColor = result.AccentColor;
 
-                if (!string.IsNullOrWhiteSpace(result.LandmarkDescription))
-                {
-                    PictureDescription += $". {result.LandmarkDescription}";
-                }
-            }
-            finally
-            {
-                IsPosting = false;
-            }
+            //    PictureDescription = result.Description;
+
+            //    if (!string.IsNullOrWhiteSpace(result.LandmarkDescription))
+            //    {
+            //        PictureDescription += $". {result.LandmarkDescription}";
+            //    }
+            //}
+            //finally
+            //{
+            //    IsPosting = false;
+            //}
         }
     }
 }

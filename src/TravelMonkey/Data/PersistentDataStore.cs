@@ -1,8 +1,6 @@
 ﻿using Akavache;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using TravelMonkey.Models;
@@ -13,23 +11,19 @@ namespace TravelMonkey.Data
     {
         private static readonly IBlobCache Cache = Akavache.BlobCache.UserAccount;
 
-        private const string PictureEntriesKey = "PictureEntries";
-        public static ObservableCollection<PictureEntry> Pictures { get; set; } = new ObservableCollection<PictureEntry>();
-
-        public static async Task<IEnumerable<PictureEntry>> GetPictures()
+        public static async Task<IEnumerable<Destination>> GetDestinations()
         {
-            return await Cache.GetAllObjects<PictureEntry>();
+            return await Cache.GetAllObjects<Destination>();
         }
 
-        public static async Task AddPicture(string description, byte[] picture)
+        public static async Task AddDestination(Destination destination)
         {
-            var entry = new PictureEntry(description, picture);
-            await Cache.InsertObject(entry.Id.ToString(), entry);
+            await Cache.InsertObject(destination.Id.ToString(), destination);
         }
 
-        public static async Task RemovePicture(Guid id)
+        public static async Task RemoveDestination(Guid id)
         {
-            await Cache.InvalidateObject<PictureEntry>(id.ToString());
+            await Cache.InvalidateObject<Destination>(id.ToString());
         }
     }
 }

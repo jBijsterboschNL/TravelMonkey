@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Timers;
 using TravelMonkey.Data;
 using TravelMonkey.Models;
+using TravelMonkey.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -11,71 +11,75 @@ namespace TravelMonkey.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        private readonly Timer _slideShowTimer = new Timer(5000);
+        private readonly BingSearchService _bingSearchService = new BingSearchService();
+        private readonly ComputerVisionService _computerVisionService = new ComputerVisionService();
 
-        public List<Destination> Destinations => MockDataStore.Destinations;
-        
-        private ObservableCollection<PictureEntry> _pictures = new ObservableCollection<PictureEntry>();
-        public ObservableCollection<PictureEntry> Pictures
+        private ObservableCollection<Destination> _destination = new ObservableCollection<Destination>();
+        public ObservableCollection<Destination> Destinations
         {
-            get => _pictures;
-            set => Set(ref _pictures, value);
+            get => _destination;
+            set => Set(ref _destination, value);
         }
 
-        private Destination _currentDestination;
-        public Destination CurrentDestination
+        private bool _isProcessing = false;
+        public bool IsProcessing
         {
-            get => _currentDestination;
-            set => Set(ref _currentDestination, value);
+            get => _isProcessing;
+            set => Set(ref _isProcessing, value);
         }
 
         public Command<string> OpenUrlCommand { get; } = new Command<string>(async (url) =>
         {
             if (!string.IsNullOrWhiteSpace(url))
+            {
                 await Browser.OpenAsync(url, options: new BrowserLaunchOptions
                 {
                     Flags = BrowserLaunchFlags.PresentAsFormSheet,
                     PreferredToolbarColor = Color.SteelBlue,
                     PreferredControlColor = Color.White
                 });
+            }
         });
 
         public MainPageViewModel()
         {
-            RefreshPictures();
+            //MessagingCenter.Subscribe<AddPicturePageViewModel>(this, Constants.PictureAddedMessage, async (vm) => await RefreshDestinations());
+        }
 
-            if (Destinations.Count > 0)
+        public async Task AddDestination(string destinationName)
+        {
+            IsProcessing = true;
+
+            try
             {
-                CurrentDestination = Destinations[0];
+                var images = await _bingSearchService.GetDestinationImages(destinationName);
 
-                _slideShowTimer.Elapsed += (o, a) =>
+                foreach(var image in images)
                 {
-                    var currentIdx = Destinations.IndexOf(CurrentDestination);
+                    var result = await _computerVisionService.AnalyzePicture(image.ImageUrl);
+                    if (result.Succeeded)
+                    {
+                        image.Description = result.Description;
+                        if (!string.IsNullOrWhiteSpace(result.LandmarkDescription))
+                        {
+                            image.Description += $". {result.LandmarkDescription}";
+                        }
+                    }
+                }
 
-                    if (currentIdx == Destinations.Count - 1)
-                        CurrentDestination = Destinations[0];
-                    else
-                        CurrentDestination = Destinations[currentIdx + 1];
-                };
+                var destination = new Destination(destinationName, images);
+                await PersistentDataStore.AddDestination(destination);
+
+                var destinations = await PersistentDataStore.GetDestinations();
+                Destinations = new ObservableCollection<Destination>(destinations);
             }
-
-            MessagingCenter.Subscribe<AddPicturePageViewModel>(this, Constants.PictureAddedMessage, async (vm) => await RefreshPictures());
-        }
-
-        private async Task RefreshPictures()
-        {
-            var pictures = await PersistentDataStore.GetPictures();
-            Pictures = new ObservableCollection<PictureEntry>(pictures);
-        }
-
-        public void StartSlideShow()
-        {
-            _slideShowTimer.Start();
-            
-        }
-        public void StopSlideShow()
-        {
-            _slideShowTimer.Stop();
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                IsProcessing = false;
+            }
         }
     }
 }

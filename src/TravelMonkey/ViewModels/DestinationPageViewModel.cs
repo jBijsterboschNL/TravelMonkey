@@ -2,7 +2,7 @@
 
 namespace TravelMonkey.ViewModels
 {
-    public class PictureDetailsPageViewModel : BaseViewModel
+    public class DestinationPageViewModel : BaseViewModel
     {
         private PictureEntry _picture;
         public PictureEntry Picture
@@ -11,7 +11,7 @@ namespace TravelMonkey.ViewModels
             set => Set(ref _picture, value);
         }
 
-        public PictureDetailsPageViewModel()
+        public DestinationPageViewModel()
         {
         }
 

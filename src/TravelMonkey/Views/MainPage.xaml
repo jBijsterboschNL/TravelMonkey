@@ -1,5 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" xmlns:effect="clr-namespace:TravelMonkey.Effects" mc:Ignorable="d" x:Class="TravelMonkey.Views.MainPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:effect="clr-namespace:TravelMonkey.Effects"
+             xmlns:conv="clr-namespace:TravelMonkey.Converters"
+             mc:Ignorable="d"
+             x:Class="TravelMonkey.Views.MainPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:FirstDestinationImageOrDefaultConverter x:Key="FirstDestinationImageOrDefaultConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    
     <ScrollView>
         <StackLayout BackgroundColor="White">
             <!-- Hero image -->
@@ -41,69 +58,75 @@
                             </Label>
                         </StackLayout>
 
-                        <!-- Translate -->
-                        <yummy:PancakeView Margin="20,0" HeightRequest="50" BackgroundColor="#99ffffff" CornerRadius="8" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
-                            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Margin="20,0">
-                                <Label FontSize="20" VerticalOptions="Center" TextColor="Gray" FontFamily="FontAwesomeSolid" Text="" Margin="0,0,12,0" />
-                                <Entry x:Name="TranslateTextEntry" FontFamily="LatoRegular" TextColor="Black" BackgroundColor="Transparent" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Completed="Entry_Completed" Placeholder="Need to translate something?" PlaceholderColor="Gray" />
-                            </StackLayout>
+                            <!-- Translate -->
+                            <yummy:PancakeView Margin="20,0" HeightRequest="50" BackgroundColor="#99ffffff" CornerRadius="8" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center" Margin="20,0">
+                                    <Label FontSize="20" VerticalOptions="Center" TextColor="Gray" FontFamily="FontAwesomeSolid" Text="" Margin="0,0,12,0" />
+                                    <Entry x:Name="TranslateTextEntry" FontFamily="LatoRegular" TextColor="Black" BackgroundColor="Transparent" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Completed="Entry_Completed" Placeholder="Need to translate something?" PlaceholderColor="Gray" />
+                                </StackLayout>
+                            </yummy:PancakeView>
+                        </StackLayout>
+                        <yummy:PancakeView HeightRequest="100" BackgroundColor="#aaeeeeee" CornerRadius="20,0,0,40" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" Margin="20,0,0,0" Spacing="0" VerticalOptions="Center">
+                                    <Label Text="Happy places" FontSize="24" FontFamily="LatoBold" TextColor="Black" />
+                                    <Label Text="Find out if your desired destination makes you happy" TextColor="#666" FontSize="16" FontFamily="LatoRegular" />
+                                </StackLayout>
+                            </Grid>
                         </yummy:PancakeView>
-                    </StackLayout>
-                    <yummy:PancakeView HeightRequest="100" BackgroundColor="#aaeeeeee" CornerRadius="20,0,0,40" HorizontalOptions="FillAndExpand" VerticalOptions="End">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackLayout Grid.Column="0" Margin="20,0,0,0" Spacing="0" VerticalOptions="Center">
-                                <Label Text="{Binding CurrentDestination.Title}" FontSize="24" FontFamily="LatoBold" TextColor="Black" />
-                                <Label Text="Recommendation" TextColor="#666" FontSize="16" FontFamily="LatoRegular" />
-                            </StackLayout>
-                        </Grid>
-                    </yummy:PancakeView>
-                </Grid>
-            </yummy:PancakeView>
+                    </Grid>
+                </yummy:PancakeView>
 
-            <!-- Pictures -->
-            <StackLayout Orientation="Horizontal">
-                <Label HorizontalOptions="Start" VerticalOptions="Center" Text="Pictures" FontFamily="LatoBold" FontSize="20" Margin="20,20,20,0" TextColor="Black" />
-                <Label HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="#2687ee" Text="ADD NEW" FontSize="12" FontFamily="LatoBold" Margin="20,20,20,0">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="AddNewPicture_Tapped" />
-                    </Label.GestureRecognizers>
-                </Label>
+                <!-- Destinations -->
+                <StackLayout Orientation="Horizontal">
+                    <Label HorizontalOptions="Start" VerticalOptions="Center" Text="Destinations" FontFamily="LatoBold" FontSize="20" Margin="20,20,20,0" TextColor="Black" />
+                    <Label HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="#2687ee" Text="ADD NEW" FontSize="12" FontFamily="LatoBold" Margin="20,20,20,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="AddNewDestination_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <StackLayout Spacing="0" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Destinations}" HeightRequest="120">
+                        <BindableLayout.EmptyViewTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+                                    <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="LatoRegular" FontSize="15" TextColor="Black">No destination yet, go ahead and add some!</Label>
+                                    <!--<Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="LatoRegular" FontSize="15" TextColor="Black">No pictures yet, give me your best shots! 📸</Label>-->
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.EmptyViewTemplate>
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10,0">
+                                    <yummy:PancakeView HeightRequest="120" WidthRequest="200" IsClippedToBounds="true" CornerRadius="12">
+                                        <yummy:PancakeView.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="Destination_Tapped" />
+                                        </yummy:PancakeView.GestureRecognizers>
+
+                                        <Grid>
+                                            <Image Aspect="AspectFill" Source="{Binding Images, Converter={StaticResource FirstDestinationImageOrDefaultConverter}}" />
+                                            <yummy:PancakeView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundGradientStartColor="Transparent" BackgroundGradientEndColor="#222" />
+                                            <StackLayout Spacing="0" Margin="12" VerticalOptions="EndAndExpand">
+                                                <Label FontSize="16" FontFamily="LatoBold" TextColor="#fff" Text="{Binding Name}" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </yummy:PancakeView>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
             </StackLayout>
 
-            <ScrollView Orientation="Horizontal">
-                <StackLayout Spacing="0" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Pictures}" HeightRequest="120">
-                    <BindableLayout.EmptyViewTemplate>
-                        <DataTemplate>
-                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
-                                <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="LatoRegular" FontSize="15" TextColor="Black">No pictures yet, give me your best shots! 📸</Label>
-                            </Grid>
-                        </DataTemplate>
-                    </BindableLayout.EmptyViewTemplate>
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="10,0">
-                                <yummy:PancakeView HeightRequest="120" WidthRequest="200" IsClippedToBounds="true" CornerRadius="12">
-                                    <yummy:PancakeView.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="Picture_Tapped" />
-                                    </yummy:PancakeView.GestureRecognizers>
-                                    
-                                    <Grid>
-                                        <Image Aspect="AspectFill" Source="{Binding ImageStream}" />
-                                        <yummy:PancakeView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundGradientStartColor="Transparent" BackgroundGradientEndColor="#222" />
-                                        <StackLayout Spacing="0" Margin="12" VerticalOptions="EndAndExpand">
-                                            <Label FontSize="16" FontFamily="LatoBold" TextColor="#fff" Text="{Binding Description}" />
-                                        </StackLayout>
-                                    </Grid>
-                                </yummy:PancakeView>
-                            </Grid>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
-            </ScrollView>
-        </StackLayout>
+            <Grid IsVisible="{Binding IsProcessing}" BackgroundColor="#B0000000">
+                <ActivityIndicator IsRunning="{Binding IsProcessing}" HorizontalOptions="Center" VerticalOptions="Center" Color="White" />
+            </Grid>
+        </Grid>
     </ScrollView>
 </ContentPage>

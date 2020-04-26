@@ -6,17 +6,17 @@ using Xamarin.Forms.Xaml;
 namespace TravelMonkey.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PictureDetailsPage : ContentPage
+    public partial class DestinationPage : ContentPage
     {
-        private readonly PictureDetailsPageViewModel _pictureDetailsPageViewModel = new PictureDetailsPageViewModel();
+        private readonly DestinationPageViewModel _destinationPageViewModel = new DestinationPageViewModel();
 
-        public PictureDetailsPage(PictureEntry picture)
+        public DestinationPage()//PictureEntry picture)
         {
             InitializeComponent();
 
-            _pictureDetailsPageViewModel.Init(picture);
+            //_destinationPageViewModel.Init(picture);
 
-            BindingContext = _pictureDetailsPageViewModel;
+            BindingContext = _destinationPageViewModel;
         }
 
         private void BackButton_Tapped(object sender, System.EventArgs e)

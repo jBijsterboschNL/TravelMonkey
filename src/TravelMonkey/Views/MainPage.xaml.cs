@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TravelMonkey.Models;
 using TravelMonkey.ViewModels;
 using Xamarin.Forms;
 
@@ -12,35 +13,28 @@ namespace TravelMonkey.Views
 
         public MainPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+
             InitializeComponent();
 
             BindingContext = _mainPageViewModel;
         }
 
-        protected override void OnAppearing()
+        private async void AddNewDestination_Tapped(object sender, EventArgs e)
         {
-            base.OnAppearing();
+            var destination = await DisplayPromptAsync("Enter a destination", "And start your journey here to find out if this place makes you happy.");
 
-            _mainPageViewModel.StartSlideShow();
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            _mainPageViewModel.StopSlideShow();
-        }
-
-        private async void AddNewPicture_Tapped(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new AddPicturePage());
-        }
-
-        private async void Picture_Tapped(object sender, EventArgs e)
-        {
-            if ((sender as BindableObject).BindingContext is PictureEntry picture)
+            if (!string.IsNullOrWhiteSpace(destination))
             {
-                await Navigation.PushAsync(new PictureDetailsPage(picture));
+                await _mainPageViewModel.AddDestination(destination);
+            }
+        }
+
+        private async void Destination_Tapped(object sender, EventArgs e)
+        {
+            if ((sender as BindableObject).BindingContext is Destination destination)
+            {
+                await Navigation.PushAsync(new DestinationPage());
             }
         }
 

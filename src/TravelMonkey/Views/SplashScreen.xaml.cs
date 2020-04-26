@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using TravelMonkey.Data;
 using TravelMonkey.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -8,8 +7,6 @@ namespace TravelMonkey.Views
 {
     public partial class SplashScreen : ContentPage
     {
-        private readonly BingSearchService _bingSearchService = new BingSearchService();
-
         public SplashScreen()
         {
             InitializeComponent();
@@ -39,8 +36,6 @@ namespace TravelMonkey.Views
 
         private async void InitializeData()
         {
-            MockDataStore.Destinations = await _bingSearchService.GetDestinations();
-
             await MainThread.InvokeOnMainThreadAsync(AnimateTransition);
 
             NavigateToMainPage();
@@ -61,7 +56,7 @@ namespace TravelMonkey.Views
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Application.Current.MainPage = new MainPage();
+                Application.Current.MainPage = new NavigationPage(new MainPage());
             });
         }
     }

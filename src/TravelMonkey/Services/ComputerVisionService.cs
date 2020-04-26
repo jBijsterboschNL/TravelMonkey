@@ -15,11 +15,11 @@ namespace TravelMonkey.Services
             Endpoint = ApiKeys.ComputerVisionEndpoint
         };
 
-        public async Task<AddPictureResult> AddPicture(Stream pictureStream)
+        public async Task<AnalyzePictureResult> AnalyzePicture(string pictureUrl)
         {
             try
             {
-                var result = await _computerVisionClient.AnalyzeImageInStreamAsync(pictureStream, details: new[] { Details.Landmarks }, visualFeatures: new[] { VisualFeatureTypes.Color, VisualFeatureTypes.Description });
+                var result = await _computerVisionClient.AnalyzeImageAsync(pictureUrl, details: new[] { Details.Landmarks }, visualFeatures: new[] { VisualFeatureTypes.Color, VisualFeatureTypes.Description });
 
                 // Get most likely description
                 var description = result.Description.Captions.OrderByDescending(d => d.Confidence).FirstOrDefault()?.Text ?? "nothing! No description found";
@@ -35,11 +35,11 @@ namespace TravelMonkey.Services
                 landmarkDescription = landmark != null ? landmark.Detail.Landmarks.OrderByDescending(l => l.Confidence).First().Name : "";
 
                 // Wrap in our result object and send along
-                return new AddPictureResult(description, accentColor, landmarkDescription);
+                return new AnalyzePictureResult(description, accentColor, landmarkDescription);
             }
             catch
             {
-                return new AddPictureResult();
+                return new AnalyzePictureResult();
             }
         }
     }
