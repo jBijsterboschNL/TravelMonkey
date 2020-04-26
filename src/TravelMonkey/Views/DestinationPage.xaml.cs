@@ -10,11 +10,11 @@ namespace TravelMonkey.Views
     {
         private readonly DestinationPageViewModel _destinationPageViewModel = new DestinationPageViewModel();
 
-        public DestinationPage()//PictureEntry picture)
+        public DestinationPage(Destination destination)
         {
             InitializeComponent();
 
-            //_destinationPageViewModel.Init(picture);
+            _destinationPageViewModel.Init(destination);
 
             BindingContext = _destinationPageViewModel;
         }
@@ -22,6 +22,20 @@ namespace TravelMonkey.Views
         private void BackButton_Tapped(object sender, System.EventArgs e)
         {
             Navigation.PopAsync();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            _destinationPageViewModel.StartSlideShow();
+        }
+
+        protected override void OnDisappearing()
+        {
+            _destinationPageViewModel.StopSlideShow();
+
+            base.OnDisappearing();
         }
     }
 }

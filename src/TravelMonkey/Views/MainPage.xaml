@@ -97,7 +97,6 @@
                             <DataTemplate>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                                     <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="LatoRegular" FontSize="15" TextColor="Black">No destination yet, go ahead and add some!</Label>
-                                    <!--<Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="LatoRegular" FontSize="15" TextColor="Black">No pictures yet, give me your best shots! 📸</Label>-->
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.EmptyViewTemplate>

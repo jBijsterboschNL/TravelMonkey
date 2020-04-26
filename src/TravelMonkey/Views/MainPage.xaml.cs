@@ -34,7 +34,7 @@ namespace TravelMonkey.Views
         {
             if ((sender as BindableObject).BindingContext is Destination destination)
             {
-                await Navigation.PushAsync(new DestinationPage());
+                await Navigation.PushAsync(new DestinationPage(destination));
             }
         }
 

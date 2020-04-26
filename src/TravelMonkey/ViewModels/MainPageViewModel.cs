@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using TravelMonkey.Data;
 using TravelMonkey.Models;
 using TravelMonkey.Services;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace TravelMonkey.ViewModels
 {
@@ -28,22 +26,16 @@ namespace TravelMonkey.ViewModels
             set => Set(ref _isProcessing, value);
         }
 
-        public Command<string> OpenUrlCommand { get; } = new Command<string>(async (url) =>
-        {
-            if (!string.IsNullOrWhiteSpace(url))
-            {
-                await Browser.OpenAsync(url, options: new BrowserLaunchOptions
-                {
-                    Flags = BrowserLaunchFlags.PresentAsFormSheet,
-                    PreferredToolbarColor = Color.SteelBlue,
-                    PreferredControlColor = Color.White
-                });
-            }
-        });
-
         public MainPageViewModel()
         {
             //MessagingCenter.Subscribe<AddPicturePageViewModel>(this, Constants.PictureAddedMessage, async (vm) => await RefreshDestinations());
+            RefreshDestinations();
+        }
+
+        private async Task RefreshDestinations()
+        {
+            var destinations = await PersistentDataStore.GetDestinations();
+            Destinations = new ObservableCollection<Destination>(destinations);
         }
 
         public async Task AddDestination(string destinationName)
@@ -70,8 +62,7 @@ namespace TravelMonkey.ViewModels
                 var destination = new Destination(destinationName, images);
                 await PersistentDataStore.AddDestination(destination);
 
-                var destinations = await PersistentDataStore.GetDestinations();
-                Destinations = new ObservableCollection<Destination>(destinations);
+                await RefreshDestinations();
             }
             catch (Exception ex)
             {

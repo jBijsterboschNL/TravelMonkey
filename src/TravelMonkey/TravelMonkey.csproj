@@ -21,16 +21,9 @@
     <PackageReference Include="Microsoft.Azure.CognitiveServices.Search.ImageSearch" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="Resources\Fonts\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Models\" />
-    <Folder Include="Effects\" />
-    <Folder Include="Views\" />
-    <Folder Include="Services\" />
-    <Folder Include="Data\" />
+    <Folder Include="Resources\Videos\" />
     <Folder Include="Models\CognitiveServices\" />
-    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Fonts\Lato-Black.ttf" />
@@ -51,9 +44,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\DestinationPage.xaml.cs">
+      <DependentUpon>DestinationPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Views\PictureDetailsPage.xaml">
+    <EmbeddedResource Update="Views\DestinationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
