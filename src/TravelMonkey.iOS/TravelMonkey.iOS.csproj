@@ -176,5 +176,6 @@
     <BundleResource Include="Resources\TravelMonkey.png" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Resources\forest.mp4" />
   </ItemGroup>
 </Project>

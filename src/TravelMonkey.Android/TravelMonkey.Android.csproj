@@ -176,6 +176,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\raw\forest.mp4" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\drawable\arrow_back.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

@@ -16,47 +16,44 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     
-    
     <ScrollView>
-        <StackLayout BackgroundColor="White">
-            <!-- Hero image -->
-            <yummy:PancakeView HorizontalOptions="Fill" VerticalOptions="Start" CornerRadius="0,0,0,40" HeightRequest="350">
-                <Grid>
-                    <CarouselView PeekAreaInsets="-1" Margin="0,-1,0,0" x:Name="TheCarousel" ItemsSource="{Binding Destinations}" CurrentItem="{Binding CurrentDestination}">
-                        <CarouselView.ItemTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding ImageUrl}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill" Opacity="0.7" />
-                            </DataTemplate>
-                        </CarouselView.ItemTemplate>
+        <Grid>
+            <StackLayout>
+                <!-- Background video -->
+                <yummy:PancakeView HorizontalOptions="Fill" VerticalOptions="Start" CornerRadius="0,0,0,40" HeightRequest="350">
+                    <Grid>
+                        <MediaElement Source="ms-appx:///forest.mp4" AutoPlay="True" IsLooping="True" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
 
-                    </CarouselView>
-                    <StackLayout>
-                        <StackLayout Spacing="0" VerticalOptions="Start" Orientation="Horizontal">
-                            <StackLayout.Margin>
-                                <OnPlatform x:TypeArguments="Thickness">
-                                    <On Platform="iOS" Value="0,12,0,0" />
-                                    <On Platform="Android" Value="0,24,0,0" />
-                                </OnPlatform>
-                            </StackLayout.Margin>
-                            <StackLayout.Effects>
-                                <effect:SafeAreaPaddingEffect />
-                            </StackLayout.Effects>
-                            <StackLayout Margin="20,0,20,0" Spacing="0">
+                        <StackLayout>
+                            <StackLayout Spacing="0" VerticalOptions="Start" Orientation="Horizontal">
                                 <StackLayout.Margin>
                                     <OnPlatform x:TypeArguments="Thickness">
-                                        <On Platform="iOS" Value="20,0,20,0" />
-                                        <On Platform="Android" Value="20,0,20,20" />
+                                        <On Platform="iOS" Value="0,12,0,0" />
+                                        <On Platform="Android" Value="0,24,0,0" />
                                     </OnPlatform>
                                 </StackLayout.Margin>
-                                <Label TextColor="#fff" FontFamily="LatoBlack" FontSize="22" Text="Hi there," />
-                                <Label TextColor="#fff" FontFamily="LatoBlack" FontSize="22" Text="Where do you want to go?" />
+                                <StackLayout.Effects>
+                                    <effect:SafeAreaPaddingEffect />
+                                </StackLayout.Effects>
+                                <StackLayout Margin="20,0,20,0" Spacing="0">
+                                    <StackLayout.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <On Platform="iOS" Value="20,0,20,0" />
+                                            <On Platform="Android" Value="20,0,20,20" />
+                                        </OnPlatform>
+                                    </StackLayout.Margin>
+                                    <Label TextColor="#fff" FontFamily="LatoBlack" FontSize="22" Text="Hi there,">
+                                        <Label.Effects>
+                                            <effect:ShadowEffect DistanceX="5" DistanceY="5" Color="#000" Radius="5" />
+                                        </Label.Effects>
+                                    </Label>
+                                    <Label TextColor="#fff" FontFamily="LatoBlack" FontSize="22" Text="Where do you want to go?">
+                                        <Label.Effects>
+                                            <effect:ShadowEffect DistanceX="5" DistanceY="5" Color="#000" Radius="5" />
+                                        </Label.Effects>
+                                    </Label>
+                                </StackLayout>
                             </StackLayout>
-                            <Label Text="" FontSize="24" Margin="0,0,20,0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" FontFamily="FontAwesomeSolid" TextColor="#fff">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding CurrentDestination.MoreInfoUrl}" />
-                                </Label.GestureRecognizers>
-                            </Label>
-                        </StackLayout>
 
                             <!-- Translate -->
                             <yummy:PancakeView Margin="20,0" HeightRequest="50" BackgroundColor="#99ffffff" CornerRadius="8" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
