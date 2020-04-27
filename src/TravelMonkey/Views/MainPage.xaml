@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:sharedTransitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
              xmlns:effect="clr-namespace:TravelMonkey.Effects"
              xmlns:conv="clr-namespace:TravelMonkey.Converters"
              mc:Ignorable="d"
@@ -71,7 +72,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackLayout Grid.Column="0" Margin="20,0,0,0" Spacing="0" VerticalOptions="Center">
                                     <Label Text="Happy places" FontSize="24" FontFamily="LatoBold" TextColor="Black" />
-                                    <Label Text="Find out if your desired destination makes you happy" TextColor="#666" FontSize="16" FontFamily="LatoRegular" />
+                                    <Label Text="Find out which desired destination makes you happy the most. 😊" TextColor="#666" FontSize="16" FontFamily="LatoRegular" />
                                 </StackLayout>
                             </Grid>
                         </yummy:PancakeView>
@@ -106,7 +107,9 @@
                                         </yummy:PancakeView.GestureRecognizers>
 
                                         <Grid>
-                                            <Image Aspect="AspectFill" Source="{Binding Images, Converter={StaticResource FirstDestinationImageOrDefaultConverter}}" />
+                                            <Image Aspect="AspectFill" Source="{Binding Images, Converter={StaticResource FirstDestinationImageOrDefaultConverter}}"
+                                                   sharedTransitions:Transition.Name="DestinationImage"
+                                                   sharedTransitions:Transition.Group="{Binding Images, Converter={StaticResource FirstDestinationImageIdOrDefaultConverter}}"/>
                                             <yummy:PancakeView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundGradientStartColor="Transparent" BackgroundGradientEndColor="#222" />
                                             <StackLayout Spacing="0" Margin="12" VerticalOptions="EndAndExpand">
                                                 <Label FontSize="16" FontFamily="LatoBold" TextColor="#fff" Text="{Binding Name}" />

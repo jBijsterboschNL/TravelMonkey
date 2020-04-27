@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Plugin.SharedTransitions;
+using System.Threading.Tasks;
 using TravelMonkey.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -56,7 +57,7 @@ namespace TravelMonkey.Views
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Application.Current.MainPage = new NavigationPage(new MainPage());
+                Application.Current.MainPage = new SharedTransitionNavigationPage(new MainPage());
             });
         }
     }

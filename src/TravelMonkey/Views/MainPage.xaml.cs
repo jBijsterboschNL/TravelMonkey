@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Plugin.SharedTransitions;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using TravelMonkey.Models;
 using TravelMonkey.ViewModels;
 using Xamarin.Forms;
@@ -34,6 +36,8 @@ namespace TravelMonkey.Views
         {
             if ((sender as BindableObject).BindingContext is Destination destination)
             {
+                SharedTransitionNavigationPage.SetTransitionSelectedGroup(this, destination.Images.FirstOrDefault().Id.ToString());
+
                 await Navigation.PushAsync(new DestinationPage(destination));
             }
         }

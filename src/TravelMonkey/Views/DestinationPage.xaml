@@ -4,38 +4,23 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:sharedTransitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
              xmlns:effect="clr-namespace:TravelMonkey.Effects"
              mc:Ignorable="d"
              x:Class="TravelMonkey.Views.DestinationPage"
              NavigationPage.HasNavigationBar="False"
              x:Name="DestinationPageRoot">
+
     <ContentPage.Content>
         <StackLayout>
-            <!--<yummy:PancakeView HasShadow="True" IsClippedToBounds="False" HorizontalOptions="Fill" VerticalOptions="Start" CornerRadius="0,0,0,40" HeightRequest="350">
-                <Grid>
-                    <Image Source="{Binding Picture.ImageStream}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
-
-                    <StackLayout>
-                        <StackLayout.Effects>
-                            <effect:SafeAreaPaddingEffect />
-                        </StackLayout.Effects>
-
-                        <ImageButton Source="arrow_back" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="#40FFFFFF" Padding="5" Margin="20" HorizontalOptions="Start" Clicked="BackButton_Tapped" />
-                    </StackLayout>
-
-                    <yummy:PancakeView HeightRequest="100" BackgroundColor="#aaeeeeee" CornerRadius="20,0,0,40" HorizontalOptions="FillAndExpand" VerticalOptions="End">
-                        <Label Text="{Binding Picture.Description}" MaxLines="2" FontSize="24" FontFamily="LatoBold" TextColor="Black"  Margin="20,20,0,0" />
-                    </yummy:PancakeView>
-                </Grid>
-            </yummy:PancakeView>-->
-
             <!-- Hero image -->
             <yummy:PancakeView HorizontalOptions="Fill" VerticalOptions="Start" CornerRadius="0,0,0,40" HeightRequest="350">
                 <Grid>
                     <CarouselView PeekAreaInsets="-1" Margin="0,-1,0,0" x:Name="TheCarousel" ItemsSource="{Binding Destination.Images}" CurrentItem="{Binding CurrentImage}">
                         <CarouselView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageUrl}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                                <Image Source="{Binding ImageUrl}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                                       sharedTransitions:Transition.Name="DestinationImage" />
                             </DataTemplate>
                         </CarouselView.ItemTemplate>
                     </CarouselView>
