@@ -6,10 +6,17 @@
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:sharedTransitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
              xmlns:effect="clr-namespace:TravelMonkey.Effects"
+             xmlns:conv="clr-namespace:TravelMonkey.Converters"
              mc:Ignorable="d"
              x:Class="TravelMonkey.Views.DestinationPage"
              NavigationPage.HasNavigationBar="False"
              x:Name="DestinationPageRoot">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:NotNullConverter x:Key="NotNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout>
@@ -43,7 +50,7 @@
                                     </OnPlatform>
                                 </StackLayout.Margin>
 
-                                <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                     <ImageButton Source="arrow_back" WidthRequest="40" HeightRequest="40" VerticalOptions="CenterAndExpand" CornerRadius="20" BackgroundColor="#40FFFFFF" Padding="5" HorizontalOptions="Start" Clicked="BackButton_Tapped" />
 
                                     <Label Text="" FontSize="24" Margin="0,0,0,0" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" FontFamily="FontAwesomeSolid" TextColor="#fff">
@@ -67,14 +74,42 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+                            
                             <StackLayout Grid.Column="0" Margin="20,0,0,0" Spacing="0" VerticalOptions="Center">
                                 <Label Text="Description" FontSize="24" FontFamily="LatoBold" TextColor="Black" />
                                 <Label Text="{Binding CurrentImage.Description}" TextColor="#666" FontSize="16" FontFamily="LatoRegular" />
+                            </StackLayout>
+
+                            <StackLayout IsVisible="{Binding Destination.Emotion, Converter={StaticResource NotNullConverter}}" Grid.Column="1" Spacing="0" Margin="0,0,20,0" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                                <Label FontSize="20" HorizontalTextAlignment="Center" HorizontalOptions="Center" FontFamily="LatoBold"
+                                       Text="{Binding Destination.Emotion, StringFormat='{0}% happy'}" />
                             </StackLayout>
                         </Grid>
                     </yummy:PancakeView>
                 </Grid>
             </yummy:PancakeView>
+
+            <!-- Actions -->
+            <StackLayout Orientation="Horizontal">
+                <Label HorizontalOptions="Start" VerticalOptions="Center" Text="Actions" FontFamily="LatoBold" FontSize="20" Margin="20,20,20,0" TextColor="Black" />
+            </StackLayout>
+            <ScrollView Orientation="Horizontal">
+                <StackLayout Margin="20,12,20,0" Orientation="Horizontal">
+                    <yummy:PancakeView BackgroundColor="#5d6dff" Margin="0,0,4,0" HeightRequest="60" WidthRequest="160" CornerRadius="12">
+                        <Label HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16" FontFamily="LatoBold" TextColor="#fff">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf59a; " FontFamily="FontAwesomeSolid" />
+                                    <Span FontSize="16" Text="Happiness check" FontFamily="LatoRegular" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="HappinessCheck_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </yummy:PancakeView>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

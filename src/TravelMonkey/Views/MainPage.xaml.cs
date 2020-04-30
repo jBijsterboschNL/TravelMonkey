@@ -36,7 +36,7 @@ namespace TravelMonkey.Views
         {
             if ((sender as BindableObject).BindingContext is Destination destination)
             {
-                SharedTransitionNavigationPage.SetTransitionSelectedGroup(this, destination.Images.FirstOrDefault().Id.ToString());
+                SharedTransitionNavigationPage.SetTransitionSelectedGroup(this, destination.Id.ToString());
 
                 await Navigation.PushAsync(new DestinationPage(destination));
             }

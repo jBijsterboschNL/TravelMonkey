@@ -13,12 +13,15 @@ namespace TravelMonkey.Data
 
         public static async Task<IEnumerable<Destination>> GetDestinations()
         {
+            var x = await Cache.GetAllKeys();
             return await Cache.GetAllObjects<Destination>();
         }
 
-        public static async Task AddDestination(Destination destination)
+        public static async Task AddOrUpdateDestination(Destination destination)
         {
             await Cache.InsertObject(destination.Id.ToString(), destination);
+
+            var x = await Cache.GetAllKeys();
         }
 
         public static async Task RemoveDestination(Guid id)

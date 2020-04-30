@@ -14,6 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:FirstDestinationImageOrDefaultConverter x:Key="FirstDestinationImageOrDefaultConverter" />
+            <conv:NotNullConverter x:Key="NotNullConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -23,7 +24,7 @@
                 <!-- Background video -->
                 <yummy:PancakeView HorizontalOptions="Fill" VerticalOptions="Start" CornerRadius="0,0,0,40" HeightRequest="350">
                     <Grid>
-                        <MediaElement Source="ms-appx:///forest.mp4" AutoPlay="True" IsLooping="True" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                        <MediaElement Source="ms-appx:///forest.mp4" AutoPlay="True" IsLooping="True" ShowsPlaybackControls="False" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
 
                         <StackLayout>
                             <StackLayout Spacing="0" VerticalOptions="Start" Orientation="Horizontal">
@@ -109,10 +110,12 @@
                                         <Grid>
                                             <Image Aspect="AspectFill" Source="{Binding Images, Converter={StaticResource FirstDestinationImageOrDefaultConverter}}"
                                                    sharedTransitions:Transition.Name="DestinationImage"
-                                                   sharedTransitions:Transition.Group="{Binding Images, Converter={StaticResource FirstDestinationImageIdOrDefaultConverter}}"/>
+                                                   sharedTransitions:Transition.Group="{Binding Id}"/>
                                             <yummy:PancakeView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundGradientStartColor="Transparent" BackgroundGradientEndColor="#222" />
                                             <StackLayout Spacing="0" Margin="12" VerticalOptions="EndAndExpand">
                                                 <Label FontSize="16" FontFamily="LatoBold" TextColor="#fff" Text="{Binding Name}" />
+                                                <Label FontSize="12" FontFamily="LatoRegular" TextColor="#ccc" Text="{Binding Emotion, StringFormat='{0}% happy'}"
+                                                       IsVisible="{Binding Emotion, Converter={StaticResource NotNullConverter}}" />
                                             </StackLayout>
                                         </Grid>
                                     </yummy:PancakeView>

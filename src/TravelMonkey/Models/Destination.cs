@@ -6,6 +6,8 @@ namespace TravelMonkey.Models
     public class Destination
     {
         public Guid Id { get; }
+        
+        public string IdString => Id.ToString();
 
         public string Name { get; }
 
@@ -13,9 +15,11 @@ namespace TravelMonkey.Models
 
         public double? Emotion { get; set; }
 
-        public Destination(string name, IEnumerable<DestinationImage> images = null)
+        public Destination(string name, IEnumerable<DestinationImage> images = null, Guid? id = null)
         {
-            Id = Guid.NewGuid();
+            if (id == null) id = Guid.NewGuid();
+
+            Id = id.Value;
             Name = name;
 
             if (images != null)

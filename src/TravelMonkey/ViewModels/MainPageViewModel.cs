@@ -60,7 +60,7 @@ namespace TravelMonkey.ViewModels
                 }
 
                 var destination = new Destination(destinationName, images);
-                await PersistentDataStore.AddDestination(destination);
+                await PersistentDataStore.AddOrUpdateDestination(destination);
 
                 await RefreshDestinations();
             }

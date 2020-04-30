@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Acr.UserDialogs;
+﻿using Acr.UserDialogs;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using TravelMonkey.Data;
 using TravelMonkey.Models;
 using TravelMonkey.Services;
@@ -13,14 +13,22 @@ namespace TravelMonkey.ViewModels
 {
     public class AddPicturePageViewModel : BaseViewModel
     {
-        private readonly ComputerVisionService _computerVisionService = new ComputerVisionService();
         private readonly FaceService _faceService = new FaceService();
 
+        public Destination Destination { get; private set; }
+
         public bool ShowImagePlaceholder => !ShowPhoto;
+
+        internal void Init(Destination destination)
+        {
+            Destination = destination;
+        }
+
         public bool ShowPhoto => _photoSource != null;
 
-        MediaFile _photo;
-        StreamImageSource _photoSource;
+        private MediaFile _photo;
+        private StreamImageSource _photoSource;
+
         public StreamImageSource PhotoSource
         {
             get => _photoSource;
@@ -48,36 +56,36 @@ namespace TravelMonkey.ViewModels
             set => Set(ref _pictureAccentColor, value);
         }
 
-        private string _pictureDescription;
-        public string PictureDescription
-        {
-            get => _pictureDescription;
-            set => Set(ref _pictureDescription, value);
-        }
+        //private string _pictureDescription;
+        //public string PictureDescription
+        //{
+        //    get => _pictureDescription;
+        //    set => Set(ref _pictureDescription, value);
+        //}
 
         public Command TakePhotoCommand { get; }
-        public Command AddPictureCommand { get; }
+        //public Command AddPictureCommand { get; }
 
         public AddPicturePageViewModel()
         {
             TakePhotoCommand = new Command(async () => await TakePhoto());
-            AddPictureCommand = new Command(async () =>
-             {
-                 if (_photoSource == null) return;
+            //AddPictureCommand = new Command(async () =>
+            // {
+            //     if (_photoSource == null) return;
 
-                 byte[] bytes;
-                 using (var stream = await _photoSource.Stream(CancellationToken.None))
-                 {
-                     using (MemoryStream ms = new MemoryStream())
-                     {
-                         stream.CopyTo(ms);
-                         bytes = ms.ToArray();
+            //     byte[] bytes;
+            //     using (var stream = await _photoSource.Stream(CancellationToken.None))
+            //     {
+            //         using (MemoryStream ms = new MemoryStream())
+            //         {
+            //             stream.CopyTo(ms);
+            //             bytes = ms.ToArray();
 
-                         //await PersistentDataStore.AddPicture(_pictureDescription, bytes);
-                         MessagingCenter.Send(this, Constants.PictureAddedMessage);
-                     }
-                 }
-             });
+            //             //await PersistentDataStore.AddPicture(_pictureDescription, bytes);
+            //             MessagingCenter.Send(this, Constants.PictureAddedMessage);
+            //         }
+            //     }
+            // });
         }
 
         private async Task TakePhoto()
@@ -116,32 +124,22 @@ namespace TravelMonkey.ViewModels
 
             IsPosting = true;
 
-            //try
-            //{
-            //    var pictureStream = _photo.GetStreamWithImageRotatedForExternalStorage();
+            try
+            {
+                var pictureStream = _photo.GetStreamWithImageRotatedForExternalStorage();
 
-            //    //var x = _faceService.DetectFaceEmotion(pictureStream);
-            //    var result = await _computerVisionService.AddPicture(pictureStream);
+                var emotion = await _faceService.DetectFaceEmotion(pictureStream);
 
-            //    if (!result.Succeeded)
-            //    {
-            //        MessagingCenter.Send(this, Constants.PictureFailedMessage);
-            //        return;
-            //    }
+                Destination.Emotion = emotion.Happiness * 100.00;
 
-            //    PictureAccentColor = result.AccentColor;
+                await PersistentDataStore.AddOrUpdateDestination(Destination);
 
-            //    PictureDescription = result.Description;
-
-            //    if (!string.IsNullOrWhiteSpace(result.LandmarkDescription))
-            //    {
-            //        PictureDescription += $". {result.LandmarkDescription}";
-            //    }
-            //}
-            //finally
-            //{
-            //    IsPosting = false;
-            //}
+                MessagingCenter.Send(this, Constants.PictureAddedMessage);
+            }
+            finally
+            {
+                IsPosting = false;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.10.6" />
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.Face" Version="2.5.0-preview.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.616-pre4" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
     <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.3.7" />
@@ -23,7 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Fonts\" />
-    <Folder Include="Resources\Videos\" />
     <Folder Include="Models\CognitiveServices\" />
   </ItemGroup>
   <ItemGroup>
